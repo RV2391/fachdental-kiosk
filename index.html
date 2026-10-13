@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KursRadar">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>KursRadar · Fachdental Südwest 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0f3331;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    color: white;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #player {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh;
+    object-fit: contain;
+    background: #0f3331;
+    display: block;
+  }
+  #cacheStatus {
+    position: fixed; top: 20px; right: 20px;
+    padding: 10px 18px;
+    background: rgba(15,51,49,0.85);
+    border: 1.5px solid rgba(52,174,164,0.5);
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #34aea4;
+    z-index: 20;
+    display: none;
+  }
+  #cacheStatus.show { display: block; }
+  #tapHint {
+    position: fixed;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 28px;
+    background: rgba(15, 51, 49, 0.85);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(52, 174, 164, 0.5);
+    border-radius: 100px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #34aea4;
+    z-index: 10;
+    animation: pulse 2.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50%     { opacity: 1;   transform: translateX(-50%) scale(1.04); }
+  }
+  #qrOverlay {
+    position: fixed; inset: 0;
+    background: rgba(15, 51, 49, 0.97);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #qrOverlay.show { display: flex; opacity: 1; }
+  .qr-eyebrow { font-size: 22px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #34aea4; }
+  .qr-headline { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-align: center; max-width: 90%; }
+  .qr-headline .accent { color: #34aea4; }
+  .qr-card { background: white; padding: 32px; border-radius: 32px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+  .qr-card img { width: 420px; height: 420px; display: block; }
+  .qr-sub { font-size: 28px; color: white; font-weight: 500; text-align: center; max-width: 80%; line-height: 1.3; }
+  .qr-url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 22px; color: #34aea4; letter-spacing: 0.02em; }
+  .qr-countdown { position: absolute; bottom: 32px; right: 48px; font-size: 16px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<video id="player" muted playsinline webkit-playsinline autoplay preload="auto"></video>
+<div id="tapHint">Tippen für Kurs-Radar</div>
+<div id="cacheStatus">⏳ Lädt 0 / 5</div>
+
+<div id="qrOverlay">
+  <div class="qr-eyebrow">Scanne mit deinem Phone</div>
+  <h1 class="qr-headline">
+    Fachdental-Besucher?<br>
+    <span class="accent">Hol dir deinen Kurs-Radar.</span>
+  </h1>
+  <div class="qr-card">
+    <img src="qr-fachdental.png" alt="QR" width="420" height="420">
+  </div>
+  <div class="qr-sub">
+    Alle Dental-Fortbildungen in einer Suche.<br>
+    Kostenlos. Herstellerneutral.
+  </div>
+  <div class="qr-url">kurs-radar.com/themen/fachdental</div>
+  <div class="qr-countdown" id="countdown"></div>
+</div>
+
+<script>
+const PLAYLIST = [
+  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoop/041a960fab8d12c8_1791804318466.mp4",
+  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoD/videod_v3.mp4",
+  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
+  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4",
+  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
+];
+const player = document.getElementById("player");
+const overlay = document.getElementById("qrOverlay");
+const countdownEl = document.getElementById("countdown");
+const tapHint = document.getElementById("tapHint");
+const cacheStatus = document.getElementById("cacheStatus");
+
+let idx = 0;
+function playNext() {
+  player.src = PLAYLIST[idx];
+  player.play().catch(() => {});
+  idx = (idx + 1) % PLAYLIST.length;
+}
+player.addEventListener("ended", playNext);
+player.addEventListener("error", playNext);
+playNext();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").then(async reg => {
+    await navigator.serviceWorker.ready;
+    const sw = reg.active || reg.waiting || reg.installing;
+    if (sw) sw.postMessage({ type: "CACHE_VIDEOS", urls: PLAYLIST });
+  }).catch(err => console.log("SW error", err));
+
+  navigator.serviceWorker.addEventListener("message", (e) => {
+    if (e.data.type === "CACHE_PROGRESS") {
+      cacheStatus.classList.add("show");
+      cacheStatus.textContent = `⏳ Lädt ${e.data.done} / ${e.data.total}`;
+      if (e.data.done === e.data.total) {
+        cacheStatus.textContent = `✓ Offline-ready`;
+        setTimeout(() => cacheStatus.classList.remove("show"), 8000);
+      }
+    }
+  });
+}
+
+let overlayTimer = null;
+let countdownInterval = null;
+const OVERLAY_DURATION_MS = 20000;
+
+function showOverlay() {
+  overlay.classList.add("show");
+  tapHint.style.display = "none";
+  if (overlayTimer) clearTimeout(overlayTimer);
+  if (countdownInterval) clearInterval(countdownInterval);
+  let secs = OVERLAY_DURATION_MS / 1000;
+  countdownEl.textContent = `zurück in ${secs}s`;
+  countdownInterval = setInterval(() => {
+    secs--;
+    countdownEl.textContent = `zurück in ${secs}s`;
+    if (secs <= 0) clearInterval(countdownInterval);
+  }, 1000);
+  overlayTimer = setTimeout(hideOverlay, OVERLAY_DURATION_MS);
+}
+function hideOverlay() {
+  overlay.classList.remove("show");
+  tapHint.style.display = "block";
+  if (overlayTimer) clearTimeout(overlayTimer);
+  if (countdownInterval) clearInterval(countdownInterval);
+}
+document.body.addEventListener("click", showOverlay);
+
+setTimeout(() => { if (!overlay.classList.contains("show")) tapHint.style.opacity = "0.4"; }, 15000);
+</script>
+
+</body>
+</html>

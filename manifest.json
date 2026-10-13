@@ -1,0 +1,21 @@
+{
+  "name": "KursRadar · Fachdental Kiosk",
+  "short_name": "KR Kiosk",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0f3331",
+  "theme_color": "#0f3331",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
