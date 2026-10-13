@@ -1,5 +1,5 @@
 // Service Worker: cached Videos für Offline-Betrieb
-const CACHE_NAME = "fachdental-kiosk-v1";
+const CACHE_NAME = "fachdental-kiosk-v2";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
@@ -15,7 +15,12 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("activate", (e) => {
-  e.waitUntil(self.clients.claim());
+  e.waitUntil(
+    // Alte Caches löschen (vorherige Versionen)
+    caches.keys().then(keys => Promise.all(
+      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    )).then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener("fetch", (e) => {
