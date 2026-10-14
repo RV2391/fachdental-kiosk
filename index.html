@@ -170,19 +170,33 @@
 
 <script>
 // ============ Playlist mit Framing + Tap-Content pro Video ============
-// Hinweis: PdZ-Standalone (videod_v3.mp4) raus — ist bereits Beat 4 im FachdentalIpadLoop
+// Dramaturgie: Was-ist-KR Opener → 4 Perspektiven tief → Keychain-Hook → Partner-Beweis
+// PdZ-Standalone raus (Duplikat zu IpadLoop Beat 4)
 const PLAYLIST = [
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
+    frame: {
+      eyebrow: "Was ist KursRadar?",
+      headline: "Deutschlands neutraler<br><span class='acc'>Fortbildungs-Katalog</span><br>für Dental.",
+      sub: "Herstellerneutral · kostenfrei für Lernende · 2026 gestartet"
+    },
+    tap: {
+      eyebrow: "Scanne mit deinem Phone",
+      headline: "Alle Dental-Fortbildungen<br><span class='accent'>in einer Suche.</span>",
+      sub: "Kostenlos. Herstellerneutral. Von BZÄK-Kammern bis Industrie-Akademien."
+    }
+  },
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoop/041a960fab8d12c8_1791804318466.mp4",
     frame: {
       eyebrow: "Vier Perspektiven · Eine Plattform",
-      headline: "KursRadar bündelt<br>Deutschlands <span class='acc'>Dental-Fortbildungen</span>",
-      sub: "Praxis · Veranstalter · Referent · Praxis der Zukunft"
+      headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
+      sub: "Praxis · Veranstalter · Referent · Praxis der Zukunft — alle auf einer Bühne"
     },
     tap: {
-      eyebrow: "Scanne mit deinem Phone",
-      headline: "Deine Perspektive<br><span class='accent'>im Katalog</span>",
-      sub: "Egal ob du Fortbildung suchst, anbietest oder referierst —<br>KursRadar bündelt alles an einem Ort."
+      eyebrow: "Deine Rolle im Katalog",
+      headline: "Egal ob du suchst,<br><span class='accent'>anbietest oder referierst.</span>",
+      sub: "KursRadar bündelt alles an einem Ort — in einer Suche, einem Konto, einer Oberfläche."
     }
   },
   {
@@ -209,19 +223,6 @@ const PLAYLIST = [
       eyebrow: "Als Veranstalter kostenlos listen",
       headline: "Mach deine Kurse<br><span class='accent'>bundesweit sichtbar.</span>",
       sub: "Katalog-Eintrag frei · Teilnahmebescheinigungen auf einem Klick · PdZ-Siegel für Founding-Partner inklusive."
-    }
-  },
-  {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
-    frame: {
-      eyebrow: "2026 gestartet",
-      headline: "Der größte neutrale<br><span class='acc'>Dental-Fortbildungs-Katalog</span>",
-      sub: "In 10 Monaten von 0 auf 67 Partner · 1.376 Kurse · 72 Buchungen"
-    },
-    tap: {
-      eyebrow: "Siegel-Bündel mit Praxis der Zukunft",
-      headline: "Kurs buchen,<br><span class='accent'>PdZ-Siegel geschenkt.</span>",
-      sub: "Code „KursRadar" bei der PdZ-Anmeldung · Print-Siegel am Stand · Glas-Siegel per Post (regulär 80 €)."
     }
   }
 ];
