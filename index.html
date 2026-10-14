@@ -22,12 +22,13 @@
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
   }
-  /* Player: Default Portrait-Setup — object-fit: contain, Petrol-Background matcht Video */
+  /* Player: optimiert fuer iPad hochkant (Portrait). object-fit: cover =
+     fullscreen, oben/unten minimal gecropped (Content ist zentral platziert). */
   #player {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     width: 100vw; height: 100vh;
     min-height: 100dvh;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
     background: #0f3331;
     display: block;
@@ -349,15 +350,12 @@ const PLAYLIST = [
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
     audience: "Was ist KursRadar?",
     bubble: "intro",
-    // PressIntro ist 84s mit mehreren Beats — Bubble wechselt mittendrin:
+    // PressIntro ist jetzt 54s — Overview + Keychain + PdZ + CTA (Zielgruppen raus, im IpadLoop tiefer)
     bubbleTimeline: [
-      { t: 0,  bubble: "intro" },      // Hook + Big-Numbers
-      { t: 21, bubble: "praxen" },      // Zielgruppe Praxen
-      { t: 31, bubble: "veranstalter" },
-      { t: 41, bubble: "referent" },
-      { t: 51, bubble: "cme" },         // Keychain-Beat
-      { t: 59, bubble: "pdz" },         // PdZ-Siegel-Beat
-      { t: 69, bubble: "intro" },       // CTA
+      { t: 0,  bubble: "intro" },      // Hook + Big-Numbers + Prinzip
+      { t: 21, bubble: "cme" },         // Keychain-Beat (21-29s)
+      { t: 29, bubble: "pdz" },         // PdZ-Siegel-Beat (29-39s)
+      { t: 39, bubble: "intro" },       // CTA (39-54s)
     ],
     frame: {
       eyebrow: "Was ist KursRadar?",
