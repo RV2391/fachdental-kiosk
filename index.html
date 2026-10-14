@@ -56,6 +56,40 @@
     box-shadow: 0 0 0 4px rgba(52,174,164,0.3);
   }
 
+  /* Persistenter Bottom-CTA — immer sichtbar waehrend Video laeuft (Conversion-Hebel) */
+  #persistentCta {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 18px;
+    padding: 18px 32px;
+    background: rgba(10, 83, 81, 0.95);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 2px solid #34aea4;
+    border-radius: 999px;
+    z-index: 11;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #persistentCta.show { opacity: 1; }
+  #persistentCta .pc-icon {
+    width: 32px; height: 32px; border-radius: 999px;
+    background: #ff5546;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: #ffffff;
+  }
+  #persistentCta .pc-main {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  #persistentCta .pc-headline {
+    font-size: 22px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em;
+  }
+  #persistentCta .pc-url {
+    font-size: 16px; font-weight: 500; color: #34aea4; font-family: ui-monospace, Menlo, monospace;
+  }
+
   /* Cache-Status oben rechts */
   #cacheStatus {
     position: fixed; top: 24px; right: 24px;
@@ -189,6 +223,15 @@
 <!-- Dauerhaftes Zielgruppen-Badge oben links -->
 <div id="audienceBadge"><span class="dot"></span><span id="audienceLabel">KursRadar</span></div>
 
+<!-- Persistenter Bottom-CTA — immer sichtbar, Conversion-Hebel -->
+<div id="persistentCta" class="show">
+  <div class="pc-icon">→</div>
+  <div class="pc-main">
+    <div class="pc-headline">Jetzt kostenlos starten</div>
+    <div class="pc-url">kurs-radar.com · scan QR</div>
+  </div>
+</div>
+
 <div id="tapHint">Tippen für Kurs-Radar</div>
 <div id="cacheStatus">⏳ Lädt 0 / 0</div>
 
@@ -233,9 +276,23 @@
 
 <script>
 // ============ Playlist mit Framing + Tap-Content + Dauerhaft-Badge ============
-// Dramaturgie: Was-ist-KR Opener → 4 Perspektiven tief → Keychain-Hook → Partner-Beweis
+// Dramaturgie: 15s-Snack-Opener → was-ist-KR Deep → 4 Perspektiven → Keychain → Partner
 // Policy: keine absoluten Zahlen (CLAUDE.md), gerundete Formulierungen "ca.", "über"
 const PLAYLIST = [
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4",
+    audience: "KursRadar in 15s",
+    frame: {
+      eyebrow: "Snack-Version",
+      headline: "KursRadar in<br><span class='acc'>15 Sekunden.</span>",
+      sub: "Für alle, die eigentlich schon weitergehen wollten."
+    },
+    tap: {
+      eyebrow: "Scanne mit deinem Phone",
+      headline: "Jetzt kostenlos<br><span class='accent'>loslegen.</span>",
+      sub: "Scan + Email reicht. Katalog · CME-Konto · alles kostenlos."
+    }
+  },
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
     audience: "Was ist KursRadar?",
@@ -273,9 +330,9 @@ const PLAYLIST = [
       sub: "Zertifikate automatisch erfasst · DSGVO-konform · PDF-Export für die Kammer"
     },
     tap: {
-      eyebrow: "Hol dir deinen Keychain am Stand",
-      headline: "Dein CME-Konto<br><span class='accent'>passt an den Schlüsselbund.</span>",
-      sub: "QR scannen · Zertifikate ablegen · Punkte automatisch aufsummiert."
+      eyebrow: "QR scannen → Stand besuchen → Keychain",
+      headline: "Nur hier und nur heute:<br><span class='accent'>Dein CME-Keychain</span><br>gratis zum Mitnehmen.",
+      sub: "Scan jetzt → komm am Stand vorbei → wir drucken deinen Anhänger live."
     }
   },
   {
@@ -314,6 +371,7 @@ const audienceLabel = document.getElementById("audienceLabel");
 const qrInterstitial = document.getElementById("qrInterstitial");
 const qiHeadline = document.getElementById("qiHeadline");
 const qiCountdown = document.getElementById("qiCountdown");
+const persistentCta = document.getElementById("persistentCta");
 
 let idx = 0;
 let qiInterval = null;
@@ -334,12 +392,14 @@ function showTransition(entry) {
   trHeadline.innerHTML = entry.frame.headline;
   trSub.textContent = entry.frame.sub;
   transition.classList.add("show");
-  audienceBadge.classList.remove("show");  // waehrend Transition kein Badge
+  audienceBadge.classList.remove("show");
+  persistentCta.classList.remove("show");
 }
 
 function hideTransition(entry) {
   transition.classList.remove("show");
   setAudienceBadge(entry.audience);
+  persistentCta.classList.add("show");
 }
 
 function showQrInterstitial(entryNext) {
@@ -347,6 +407,7 @@ function showQrInterstitial(entryNext) {
   qiHeadline.innerHTML = `Hol dir deinen <span class="acc">KursRadar</span>`;
   qrInterstitial.classList.add("show");
   audienceBadge.classList.remove("show");
+  persistentCta.classList.remove("show");
   tapHint.style.display = "none";
   let secs = QR_INTERSTITIAL_MS / 1000;
   qiCountdown.textContent = `${secs}s`;
@@ -416,6 +477,7 @@ function showOverlay() {
   overlay.classList.add("show");
   tapHint.style.display = "none";
   audienceBadge.classList.remove("show");
+  persistentCta.classList.remove("show");
   if (overlayTimer) clearTimeout(overlayTimer);
   if (countdownInterval) clearInterval(countdownInterval);
   let secs = OVERLAY_DURATION_MS / 1000;
@@ -430,9 +492,10 @@ function showOverlay() {
 function hideOverlay() {
   overlay.classList.remove("show");
   tapHint.style.display = "block";
-  // Badge wieder zeigen (für aktuell laufendes Video)
+  // Badge + CTA wieder zeigen (für aktuell laufendes Video)
   const prevIdx = (idx - 1 + PLAYLIST.length) % PLAYLIST.length;
   setAudienceBadge(PLAYLIST[prevIdx].audience);
+  persistentCta.classList.add("show");
   if (overlayTimer) clearTimeout(overlayTimer);
   if (countdownInterval) clearInterval(countdownInterval);
 }
