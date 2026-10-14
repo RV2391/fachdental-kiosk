@@ -66,6 +66,48 @@
     0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
     50%     { opacity: 1;   transform: translateX(-50%) scale(1.04); }
   }
+
+  /* ========= Transition-Overlay (Positionierungs-Framing vor jedem Video) ========= */
+  #transition {
+    position: fixed; inset: 0;
+    background: #0f3331;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 40px; padding: 80px;
+    z-index: 50;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  #transition.show { opacity: 1; }
+  .tr-brand {
+    position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .tr-brand-dot {
+    width: 16px; height: 16px; border-radius: 50%; background: #34aea4;
+    box-shadow: 0 0 0 6px rgba(52,174,164,0.2);
+  }
+  .tr-brand-name {
+    font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: #ffffff;
+  }
+  .tr-eyebrow {
+    font-size: 22px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #34aea4; text-align: center;
+  }
+  .tr-headline {
+    font-size: 68px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+    color: #ffffff; text-align: center; max-width: 90%;
+  }
+  .tr-headline .acc { color: #34aea4; }
+  .tr-sub {
+    font-size: 28px; font-weight: 400; line-height: 1.4;
+    color: rgba(255,255,255,0.7); text-align: center; max-width: 80%;
+  }
+  .tr-accent-line {
+    width: 120px; height: 4px; border-radius: 4px;
+    background: linear-gradient(90deg, #0f3331, #34aea4, #ff5546);
+  }
+
+  /* ========= QR-Overlay (bei Touch) — dynamische Content-Message pro Video ========= */
   #qrOverlay {
     position: fixed; inset: 0;
     background: rgba(15, 51, 49, 0.97);
@@ -73,7 +115,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
+    gap: 36px;
     padding: 40px;
     z-index: 100;
     opacity: 0;
@@ -85,7 +127,7 @@
   .qr-headline .accent { color: #34aea4; }
   .qr-card { background: white; padding: 32px; border-radius: 32px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
   .qr-card img { width: 420px; height: 420px; display: block; }
-  .qr-sub { font-size: 28px; color: white; font-weight: 500; text-align: center; max-width: 80%; line-height: 1.3; }
+  .qr-sub { font-size: 26px; color: white; font-weight: 500; text-align: center; max-width: 85%; line-height: 1.35; }
   .qr-url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 22px; color: #34aea4; letter-spacing: 0.02em; }
   .qr-countdown { position: absolute; bottom: 32px; right: 48px; font-size: 16px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
 </style>
@@ -94,18 +136,31 @@
 
 <video id="player" muted playsinline webkit-playsinline autoplay preload="auto"></video>
 <div id="tapHint">Tippen für Kurs-Radar</div>
-<div id="cacheStatus">⏳ Lädt 0 / 5</div>
+<div id="cacheStatus">⏳ Lädt 0 / 4</div>
 
+<!-- Transition-Overlay zwischen Videos -->
+<div id="transition">
+  <div class="tr-brand">
+    <div class="tr-brand-dot"></div>
+    <div class="tr-brand-name">KursRadar</div>
+  </div>
+  <div class="tr-eyebrow" id="trEyebrow">Jetzt</div>
+  <div class="tr-headline" id="trHeadline">Platzhalter</div>
+  <div class="tr-accent-line"></div>
+  <div class="tr-sub" id="trSub">Sub-Message</div>
+</div>
+
+<!-- Tap-Overlay (dynamischer Inhalt je nach aktuellem Video) -->
 <div id="qrOverlay">
-  <div class="qr-eyebrow">Scanne mit deinem Phone</div>
-  <h1 class="qr-headline">
+  <div class="qr-eyebrow" id="qrEyebrow">Scanne mit deinem Phone</div>
+  <h1 class="qr-headline" id="qrHeadline">
     Fachdental-Besucher?<br>
     <span class="accent">Hol dir deinen Kurs-Radar.</span>
   </h1>
   <div class="qr-card">
     <img src="qr-fachdental.png" alt="QR" width="420" height="420">
   </div>
-  <div class="qr-sub">
+  <div class="qr-sub" id="qrSub">
     Alle Dental-Fortbildungen in einer Suche.<br>
     Kostenlos. Herstellerneutral.
   </div>
@@ -114,25 +169,109 @@
 </div>
 
 <script>
+// ============ Playlist mit Framing + Tap-Content pro Video ============
+// Hinweis: PdZ-Standalone (videod_v3.mp4) raus — ist bereits Beat 4 im FachdentalIpadLoop
 const PLAYLIST = [
-  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoop/041a960fab8d12c8_1791804318466.mp4",
-  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoD/videod_v3.mp4",
-  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
-  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4",
-  "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoop/041a960fab8d12c8_1791804318466.mp4",
+    frame: {
+      eyebrow: "Vier Perspektiven · Eine Plattform",
+      headline: "KursRadar bündelt<br>Deutschlands <span class='acc'>Dental-Fortbildungen</span>",
+      sub: "Praxis · Veranstalter · Referent · Praxis der Zukunft"
+    },
+    tap: {
+      eyebrow: "Scanne mit deinem Phone",
+      headline: "Deine Perspektive<br><span class='accent'>im Katalog</span>",
+      sub: "Egal ob du Fortbildung suchst, anbietest oder referierst —<br>KursRadar bündelt alles an einem Ort."
+    }
+  },
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
+    frame: {
+      eyebrow: "Dein CME-Konto",
+      headline: "Alle Punkte<br><span class='acc'>an einem Ort.</span>",
+      sub: "Zertifikate automatisch erfasst · DSGVO-konform · PDF-Export für die Kammer"
+    },
+    tap: {
+      eyebrow: "Hol dir deinen Keychain am Stand",
+      headline: "Dein CME-Konto<br><span class='accent'>passt an den Schlüsselbund.</span>",
+      sub: "QR scannen · Zertifikate ablegen · Punkte automatisch aufsummiert."
+    }
+  },
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4",
+    frame: {
+      eyebrow: "67 Veranstalter · 1.376 Kurse",
+      headline: "Die Bühne für alle,<br>die <span class='acc'>Dental-Fortbildung machen.</span>",
+      sub: "Von Kammern über Fachgesellschaften bis Industrie-Akademien — herstellerneutral in einem Katalog."
+    },
+    tap: {
+      eyebrow: "Als Veranstalter kostenlos listen",
+      headline: "Mach deine Kurse<br><span class='accent'>bundesweit sichtbar.</span>",
+      sub: "Katalog-Eintrag frei · Teilnahmebescheinigungen auf einem Klick · PdZ-Siegel für Founding-Partner inklusive."
+    }
+  },
+  {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
+    frame: {
+      eyebrow: "2026 gestartet",
+      headline: "Der größte neutrale<br><span class='acc'>Dental-Fortbildungs-Katalog</span>",
+      sub: "In 10 Monaten von 0 auf 67 Partner · 1.376 Kurse · 72 Buchungen"
+    },
+    tap: {
+      eyebrow: "Siegel-Bündel mit Praxis der Zukunft",
+      headline: "Kurs buchen,<br><span class='accent'>PdZ-Siegel geschenkt.</span>",
+      sub: "Code „KursRadar" bei der PdZ-Anmeldung · Print-Siegel am Stand · Glas-Siegel per Post (regulär 80 €)."
+    }
+  }
 ];
+
+const TRANSITION_MS = 2500;
+
 const player = document.getElementById("player");
 const overlay = document.getElementById("qrOverlay");
 const countdownEl = document.getElementById("countdown");
 const tapHint = document.getElementById("tapHint");
 const cacheStatus = document.getElementById("cacheStatus");
+const transition = document.getElementById("transition");
+const trEyebrow = document.getElementById("trEyebrow");
+const trHeadline = document.getElementById("trHeadline");
+const trSub = document.getElementById("trSub");
+const qrEyebrow = document.getElementById("qrEyebrow");
+const qrHeadline = document.getElementById("qrHeadline");
+const qrSub = document.getElementById("qrSub");
 
 let idx = 0;
+
+function applyTapContent(entry) {
+  qrEyebrow.textContent = entry.tap.eyebrow;
+  qrHeadline.innerHTML = entry.tap.headline;
+  qrSub.innerHTML = entry.tap.sub;
+}
+
+function showTransition(entry) {
+  trEyebrow.textContent = entry.frame.eyebrow;
+  trHeadline.innerHTML = entry.frame.headline;
+  trSub.textContent = entry.frame.sub;
+  transition.classList.add("show");
+}
+
+function hideTransition() {
+  transition.classList.remove("show");
+}
+
 function playNext() {
-  player.src = PLAYLIST[idx];
-  player.play().catch(() => {});
+  const entry = PLAYLIST[idx];
+  applyTapContent(entry);
+  showTransition(entry);
+  setTimeout(() => {
+    hideTransition();
+    player.src = entry.url;
+    player.play().catch(() => {});
+  }, TRANSITION_MS);
   idx = (idx + 1) % PLAYLIST.length;
 }
+
 player.addEventListener("ended", playNext);
 player.addEventListener("error", playNext);
 playNext();
@@ -141,7 +280,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").then(async reg => {
     await navigator.serviceWorker.ready;
     const sw = reg.active || reg.waiting || reg.installing;
-    if (sw) sw.postMessage({ type: "CACHE_VIDEOS", urls: PLAYLIST });
+    if (sw) sw.postMessage({ type: "CACHE_VIDEOS", urls: PLAYLIST.map(e => e.url) });
   }).catch(err => console.log("SW error", err));
 
   navigator.serviceWorker.addEventListener("message", (e) => {
