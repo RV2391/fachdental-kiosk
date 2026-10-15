@@ -37,10 +37,12 @@
   /* ========= Kapitel-Sidebar RECHTS (dauerhaft sichtbar, tap-to-jump) ========= */
   #chapterSidebar {
     position: fixed;
-    top: 92px; right: 20px;
-    width: 220px;
-    display: flex; flex-direction: column; gap: 10px;
-    padding: 16px 14px;
+    top: 92px; right: 12px;
+    width: 170px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 14px 12px;
     background: rgba(15, 51, 49, 0.78);
     -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
@@ -83,7 +85,7 @@
     transition: all 0.3s ease;
   }
   .chapter .ch-title {
-    font-size: 13px; font-weight: 700;
+    font-size: 12px; font-weight: 700;
     color: rgba(255,255,255,0.75);
     letter-spacing: -0.01em; line-height: 1.2;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -91,7 +93,7 @@
     transition: color 0.3s ease;
   }
   .chapter .ch-dur {
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     color: rgba(255,255,255,0.4);
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
@@ -165,13 +167,12 @@
     box-shadow: 0 0 0 4px rgba(52,174,164,0.3);
   }
 
-  /* Persistenter Bottom-CTA — Conversion-Hebel */
+  /* Persistenter Bottom-CTA — kompakt, bleibt links von Sidebar */
   #persistentCta {
     position: fixed;
-    bottom: 24px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; align-items: center; gap: 18px;
-    padding: 18px 32px;
+    bottom: 20px; left: 20px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
     background: rgba(10, 83, 81, 0.95);
     -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
@@ -181,40 +182,47 @@
     box-shadow: 0 12px 32px rgba(0,0,0,0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
+    max-width: calc(100vw - 220px);
   }
   #persistentCta.show { opacity: 1; }
   #persistentCta .pc-icon {
-    width: 32px; height: 32px; border-radius: 999px;
+    width: 28px; height: 28px; border-radius: 999px;
     background: #ff5546;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 800; color: #ffffff;
+    font-size: 16px; font-weight: 800; color: #ffffff;
+    flex-shrink: 0;
   }
   #persistentCta .pc-main {
     display: flex; flex-direction: column; gap: 2px;
+    min-width: 0;
   }
   #persistentCta .pc-headline {
-    font-size: 22px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em;
+    font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em;
+    white-space: nowrap;
   }
   #persistentCta .pc-url {
-    font-size: 16px; font-weight: 500; color: #34aea4; font-family: ui-monospace, Menlo, monospace;
+    font-size: 13px; font-weight: 500; color: #34aea4; font-family: ui-monospace, Menlo, monospace;
+    white-space: nowrap;
   }
 
-  /* Cache-Status UNTEN LINKS (vorher top-right → kollidierte mit Tap-Hint) */
+  /* Cache-Status TOP CENTER — unaufdringlich, keine Kollision mit Tap-Hint oder CTA */
   #cacheStatus {
-    position: fixed; bottom: 24px; left: 24px;
-    padding: 8px 14px;
-    background: rgba(15,51,49,0.85);
+    position: fixed; top: 24px; left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    background: rgba(15,51,49,0.7);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(52,174,164,0.4);
+    border: 1px solid rgba(52,174,164,0.3);
     border-radius: 100px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(52,174,164,0.9);
+    color: rgba(52,174,164,0.85);
     z-index: 9;
     display: none;
+    pointer-events: none;
   }
   #cacheStatus.show { display: block; }
 
@@ -409,7 +417,7 @@ const PLAYLIST = [
     }
   },
   {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/c96410774fa07c48_1791746037506.mp4",
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4",
     audience: "Was ist KursRadar?",
     chapter: { title: "Was ist KursRadar?", sub: "Katalog + Keychain + PdZ", dur: "54s" },
     frame: {
@@ -565,6 +573,7 @@ function showQrInterstitial() {
   qrInterstitial.classList.add("show");
   audienceBadge.classList.remove("show");
   persistentCta.classList.remove("show");
+  chapterSidebar.classList.remove("show");  // FIX v13: Sidebar verdeckte QR-Code
   tapHint.style.display = "none";
   let secs = QR_INTERSTITIAL_MS / 1000;
   qiCountdown.textContent = `${secs}s`;
