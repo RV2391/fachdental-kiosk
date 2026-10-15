@@ -27,7 +27,7 @@
      object-fit: contain → Video komplett sichtbar (keine Beschriftungen
      oder QR-Codes abgeschnitten), schließt unten bündig an die Chapter-Bar. */
   :root {
-    --chapter-bar-h: 180px;
+    --chapter-bar-h: 120px;
   }
   #player {
     position: fixed; top: 0; left: 0; right: 0;
@@ -40,13 +40,13 @@
     display: block;
   }
 
-  /* ========= Chapter-Bar UNTEN horizontal (5 Kacheln, tap-to-jump) ========= */
+  /* ========= Chapter-Bar UNTEN horizontal (6 Kacheln, tap-to-jump) ========= */
   #chapterSidebar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: var(--chapter-bar-h);
-    display: flex; gap: 6px;
-    padding: 10px 10px 14px;
+    display: flex; gap: 5px;
+    padding: 8px 8px 10px;
     background: #0f3331;
     border-top: 1px solid rgba(52, 174, 164, 0.3);
     z-index: 12;
@@ -58,8 +58,8 @@
   .chapter {
     flex: 1;
     display: flex; flex-direction: column; justify-content: space-between;
-    padding: 12px 12px;
-    border-radius: 14px;
+    padding: 8px 9px 6px;
+    border-radius: 12px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
     cursor: pointer;
@@ -68,58 +68,43 @@
   }
   .chapter:active { transform: scale(0.96); }
   .chapter .ch-head {
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 6px;
   }
   .chapter .ch-num {
-    width: 22px; height: 22px; border-radius: 50%;
+    width: 20px; height: 20px; border-radius: 50%;
     background: rgba(255,255,255,0.12);
     color: rgba(255,255,255,0.7);
-    font-size: 12px; font-weight: 800;
+    font-size: 11px; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
   }
+  .chapter .ch-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
   .chapter .ch-dur {
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     color: rgba(255,255,255,0.45);
     font-variant-numeric: tabular-nums;
     margin-left: auto;
     flex-shrink: 0;
   }
   .chapter .ch-title {
-    font-size: 14px; font-weight: 700;
+    font-size: 12px; font-weight: 700;
     color: rgba(255,255,255,0.9);
     letter-spacing: -0.01em; line-height: 1.2;
-    margin-top: 6px;
+    margin-top: 4px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-  .chapter .ch-audience {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 700;
-    color: #34aea4;
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-top: 6px;
-  }
-  .chapter .ch-audience-icon {
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .chapter .ch-audience span:last-child {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-width: 0;
   }
   .chapter .ch-progress-wrap {
     height: 2px; border-radius: 2px;
     background: rgba(255,255,255,0.1);
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -334,7 +319,7 @@
 const PLAYLIST = [
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4",
-    chapter: { title: "Schnell-Pitch", audience: "Für alle", icon: "⚡", dur: "15s" },
+    chapter: { title: "Schnell-Pitch", icon: "⚡", dur: "15s" },
     frame: {
       eyebrow: "Snack-Version",
       headline: "KursRadar in<br><span class='acc'>15 Sekunden.</span>",
@@ -348,7 +333,7 @@ const PLAYLIST = [
   },
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4",
-    chapter: { title: "Was ist KursRadar?", audience: "Für alle", icon: "📖", dur: "54s" },
+    chapter: { title: "Was ist KursRadar?", icon: "📖", dur: "54s" },
     frame: {
       eyebrow: "Was ist KursRadar?",
       headline: "Deutschlands neutraler<br><span class='acc'>Fortbildungs-Katalog</span><br>für Dental.",
@@ -361,12 +346,12 @@ const PLAYLIST = [
     }
   },
   {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoop/dbb26b7696469e52_1792056052476.mp4",
-    chapter: { title: "Vier Perspektiven", audience: "Praxis · Veranstalter · Referent · PdZ", icon: "👥", dur: "2:57" },
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v1.mp4",
+    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:16" },
     frame: {
-      eyebrow: "Vier Perspektiven · Eine Plattform",
+      eyebrow: "Drei Perspektiven · Eine Plattform",
       headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
-      sub: "Praxis · Veranstalter · Referent:in · Praxis der Zukunft — alle auf einer Bühne"
+      sub: "Praxis · Veranstalter · Referent:in — alle auf einer Bühne."
     },
     tap: {
       eyebrow: "Deine Rolle im Katalog",
@@ -375,8 +360,22 @@ const PLAYLIST = [
     }
   },
   {
+    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoD/video_d_pdz_v1.mp4",
+    chapter: { title: "Praxis der Zukunft", icon: "🏥", dur: "36s" },
+    frame: {
+      eyebrow: "Praxis der Zukunft · Kooperation",
+      headline: "Partner der<br><span class='acc'>PdZ-Initiative.</span>",
+      sub: "KursRadar bündelt die Fortbildungs-Welt — die PdZ-Initiative setzt den Qualitäts-Standard. Am Stand kommen beide zusammen."
+    },
+    tap: {
+      eyebrow: "Mehr zur PdZ-Initiative",
+      headline: "Partner der Praxis<br><span class='accent'>der Zukunft.</span>",
+      sub: "KursRadar listet die Fortbildungen der PdZ-Partner herstellerneutral in einer Suche — kostenlos für Praxis-Teams."
+    }
+  },
+  {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
-    chapter: { title: "CME-Keychain", audience: "Zahnärzte · ZFA", icon: "🔑", dur: "20s" },
+    chapter: { title: "CME-Keychain", icon: "🔑", dur: "20s" },
     frame: {
       eyebrow: "Dein Anhänger am Stand",
       headline: "Scan den QR →<br><span class='acc'>Dein CME-Wallet.</span>",
@@ -390,7 +389,7 @@ const PLAYLIST = [
   },
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4",
-    chapter: { title: "70+ Partner", audience: "Veranstalter", icon: "🏢", dur: "6s" },
+    chapter: { title: "70+ Partner", icon: "🏢", dur: "6s" },
     frame: {
       eyebrow: "ca. 70 Partner · über 2.500 Kurse",
       headline: "Die Bühne für alle,<br>die <span class='acc'>Dental-Fortbildung machen.</span>",
@@ -436,14 +435,12 @@ PLAYLIST.forEach((entry, i) => {
     <div>
       <div class="ch-head">
         <div class="ch-num">${i + 1}</div>
+        <div class="ch-icon">${escapeHtml(entry.chapter.icon)}</div>
         <div class="ch-dur">${escapeHtml(entry.chapter.dur)}</div>
       </div>
       <div class="ch-title">${escapeHtml(entry.chapter.title)}</div>
     </div>
-    <div>
-      <div class="ch-audience"><span class="ch-audience-icon">${escapeHtml(entry.chapter.icon)}</span><span>${escapeHtml(entry.chapter.audience)}</span></div>
-      <div class="ch-progress-wrap"><div class="ch-progress-bar"></div></div>
-    </div>
+    <div class="ch-progress-wrap"><div class="ch-progress-bar"></div></div>
   `;
   el.addEventListener("click", (e) => {
     e.stopPropagation();
