@@ -26,7 +26,7 @@
   /* Player: iPad hochkant (Portrait). Video oben, Chapter-Bar unten darunter.
      Höhe = Viewport minus Chapter-Bar (160px). */
   :root {
-    --chapter-bar-h: 160px;
+    --chapter-bar-h: 180px;
   }
   #player {
     position: fixed; top: 0; left: 0; right: 0;
@@ -57,8 +57,8 @@
   .chapter {
     flex: 1;
     display: flex; flex-direction: column; justify-content: space-between;
-    padding: 10px 10px;
-    border-radius: 12px;
+    padding: 12px 12px;
+    border-radius: 14px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
     cursor: pointer;
@@ -67,44 +67,52 @@
   }
   .chapter:active { transform: scale(0.96); }
   .chapter .ch-head {
-    display: flex; align-items: center; gap: 6px;
+    display: flex; align-items: center; gap: 8px;
   }
   .chapter .ch-num {
-    width: 18px; height: 18px; border-radius: 50%;
+    width: 22px; height: 22px; border-radius: 50%;
     background: rgba(255,255,255,0.12);
     color: rgba(255,255,255,0.7);
-    font-size: 10px; font-weight: 800;
+    font-size: 12px; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
   }
   .chapter .ch-dur {
-    font-size: 9px; font-weight: 600;
-    color: rgba(255,255,255,0.4);
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.45);
     font-variant-numeric: tabular-nums;
     margin-left: auto;
     flex-shrink: 0;
   }
   .chapter .ch-title {
-    font-size: 11px; font-weight: 700;
-    color: rgba(255,255,255,0.85);
+    font-size: 14px; font-weight: 700;
+    color: rgba(255,255,255,0.9);
     letter-spacing: -0.01em; line-height: 1.2;
-    margin-top: 4px;
+    margin-top: 6px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .chapter .ch-audience {
-    display: flex; align-items: center; gap: 4px;
-    font-size: 9px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700;
     color: #34aea4;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-top: 4px;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-top: 6px;
   }
   .chapter .ch-audience-icon {
-    font-size: 11px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .chapter .ch-audience span:last-child {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-width: 0;
   }
   .chapter .ch-progress-wrap {
     height: 2px; border-radius: 2px;
@@ -367,16 +375,16 @@ const PLAYLIST = [
   },
   {
     url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
-    chapter: { title: "CME-Konto", audience: "Zahnärzte · ZFA", icon: "🎓", dur: "20s" },
+    chapter: { title: "CME-Keychain", audience: "Zahnärzte · ZFA", icon: "🔑", dur: "20s" },
     frame: {
-      eyebrow: "Dein CME-Konto",
-      headline: "Alle Punkte<br><span class='acc'>an einem Ort.</span>",
-      sub: "Zertifikate automatisch erfasst · DSGVO-konform · PDF-Export für die Kammer"
+      eyebrow: "Dein Anhänger am Stand",
+      headline: "Scan den QR →<br><span class='acc'>Dein CME-Wallet.</span>",
+      sub: "Punkte-Überblick in Echtzeit · Zertifikate hochladen · DSGVO-konform · PDF-Export für die Kammer"
     },
     tap: {
-      eyebrow: "QR scannen → Stand besuchen → Keychain",
-      headline: "Nur hier und nur heute:<br><span class='accent'>Dein CME-Keychain</span><br>gratis zum Mitnehmen.",
-      sub: "Scan jetzt → komm am Stand vorbei → wir drucken deinen Anhänger live."
+      eyebrow: "Nur heute am Stand gratis",
+      headline: "Dein Keychain mit<br><span class='accent'>persönlichem QR-Code.</span>",
+      sub: "Scan → öffnet immer dein CME-Wallet: aktueller Punkte-Stand + Zertifikate hochladen in Sekunden. Keychain gibt's gratis am Stand."
     }
   },
   {
