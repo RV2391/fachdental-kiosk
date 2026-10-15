@@ -23,8 +23,9 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Player: iPad hochkant (Portrait). Video oben, Chapter-Bar unten darunter.
-     Höhe = Viewport minus Chapter-Bar (160px). */
+  /* Player: iPad hochkant. Video oben, Chapter-Bar unten.
+     object-fit: contain → Video komplett sichtbar (keine Beschriftungen
+     oder QR-Codes abgeschnitten), schließt unten bündig an die Chapter-Bar. */
   :root {
     --chapter-bar-h: 180px;
   }
@@ -33,7 +34,7 @@
     width: 100vw;
     height: calc(100vh - var(--chapter-bar-h));
     height: calc(100dvh - var(--chapter-bar-h));
-    object-fit: cover;
+    object-fit: contain;
     object-position: center center;
     background: #0f3331;
     display: block;
