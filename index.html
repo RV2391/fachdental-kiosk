@@ -267,7 +267,7 @@
 
 <video id="player" muted playsinline webkit-playsinline autoplay preload="auto"></video>
 
-<!-- Kapitel-Bar unten horizontal (5 Kacheln, tap-to-jump) -->
+<!-- Kapitel-Bar unten horizontal (2 Kacheln: Praxis der Zukunft + KursRadar) -->
 <div id="chapterSidebar" class="show">
   <!-- Items werden per JS gefüllt -->
 </div>
@@ -315,10 +315,11 @@
 </div>
 
 <script>
-// ============ Playlist mit Kapitel-Metadaten für Sidebar ============
-const PLAYLIST = [
+// ============ 2 Chapter-Gruppen für Sidebar ============
+// Jedes Chapter kann mehrere Clips sequenziell abspielen.
+// Progress-Bar summiert über alle Clips des Chapters.
+const CHAPTERS = [
   {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoDExtended/video_d_pdz_extended_v1.mp4",
     chapter: { title: "Praxis der Zukunft", icon: "🏥", dur: "1:20" },
     frame: {
       eyebrow: "Hausherren · Praxis der Zukunft",
@@ -329,79 +330,34 @@ const PLAYLIST = [
       eyebrow: "Mehr zur Initiative",
       headline: "Praxis der Zukunft<br><span class='accent'>× KursRadar.</span>",
       sub: "Scanne für Infos zur Initiative und zum Fortbildungs-Katalog."
-    }
-  },
-  {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4",
-    chapter: { title: "Schnell-Pitch", icon: "⚡", dur: "15s" },
-    frame: {
-      eyebrow: "KursRadar · Snack-Version",
-      headline: "KursRadar in<br><span class='acc'>15 Sekunden.</span>",
-      sub: "Für alle, die eigentlich schon weitergehen wollten."
     },
-    tap: {
-      eyebrow: "Scanne mit deinem Phone",
-      headline: "Jetzt kostenlos<br><span class='accent'>loslegen.</span>",
-      sub: "Scan + Email reicht. Katalog · CME-Konto · alles kostenlos."
-    }
+    clips: [
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoDExtended/video_d_pdz_extended_v1.mp4", dur: 80 }
+    ]
   },
   {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4",
-    chapter: { title: "Was ist KursRadar?", icon: "📖", dur: "54s" },
+    chapter: { title: "KursRadar", icon: "🎯", dur: "3:25" },
     frame: {
-      eyebrow: "KursRadar · Überblick",
-      headline: "Deutschlands neutraler<br><span class='acc'>Fortbildungs-Katalog</span><br>für Dental.",
-      sub: "Herstellerneutral · kostenfrei für Lernende · über 2.500 Kurse von ca. 70 Partnern"
+      eyebrow: "KursRadar · Alles in einem Durchlauf",
+      headline: "Alle Fortbildungen.<br><span class='acc'>Ein Katalog. Ein Klick.</span>",
+      sub: "Schnell-Pitch · Was ist KursRadar · Drei Perspektiven — hintereinander ohne Unterbrechung."
     },
     tap: {
       eyebrow: "Scanne mit deinem Phone",
       headline: "Alle Dental-Fortbildungen<br><span class='accent'>in einer Suche.</span>",
-      sub: "Kostenlos. Herstellerneutral. Von Kammern bis Industrie-Akademien."
-    }
-  },
-  {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v1.mp4",
-    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:16" },
-    frame: {
-      eyebrow: "KursRadar · Drei Perspektiven",
-      headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
-      sub: "Praxis · Veranstalter · Referent:in — alle auf einer Bühne."
+      sub: "Kostenlos. Herstellerneutral. Von Kammern bis Industrie-Akademien — Scan + Email reicht."
     },
-    tap: {
-      eyebrow: "Deine Rolle im Katalog",
-      headline: "Egal ob du suchst,<br><span class='accent'>anbietest oder referierst.</span>",
-      sub: "KursRadar bündelt alles an einem Ort — in einer Suche, einem Konto, einer Oberfläche."
-    }
-  },
-  {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4",
-    chapter: { title: "CME-Keychain", icon: "🔑", dur: "20s" },
-    frame: {
-      eyebrow: "Dein Anhänger am Stand",
-      headline: "Scan den QR →<br><span class='acc'>Dein CME-Wallet.</span>",
-      sub: "Punkte-Überblick in Echtzeit · Zertifikate hochladen · DSGVO-konform · PDF-Export für die Kammer"
-    },
-    tap: {
-      eyebrow: "Nur heute am Stand gratis",
-      headline: "Dein Keychain mit<br><span class='accent'>persönlichem QR-Code.</span>",
-      sub: "Scan → öffnet immer dein CME-Wallet: aktueller Punkte-Stand + Zertifikate hochladen in Sekunden. Keychain gibt's gratis am Stand."
-    }
-  },
-  {
-    url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4",
-    chapter: { title: "70+ Partner", icon: "🏢", dur: "6s" },
-    frame: {
-      eyebrow: "ca. 70 Partner · über 2.500 Kurse",
-      headline: "Die Bühne für alle,<br>die <span class='acc'>Dental-Fortbildung machen.</span>",
-      sub: "Von Kammern über Fachgesellschaften bis Industrie-Akademien — herstellerneutral in einem Katalog."
-    },
-    tap: {
-      eyebrow: "Als Veranstalter kostenlos listen",
-      headline: "Mach deine Kurse<br><span class='accent'>bundesweit sichtbar.</span>",
-      sub: "Katalog-Eintrag kostenfrei · Teilnahmebescheinigungen auf einem Klick · PdZ-Siegel für Founding-Partner inklusive."
-    }
+    clips: [
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4", dur: 15 },
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4", dur: 54 },
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v1.mp4", dur: 136 }
+    ]
   }
 ];
+// Chapter-Total-Dauern für Progress-Berechnung
+CHAPTERS.forEach(c => { c.totalDur = c.clips.reduce((a, b) => a + b.dur, 0); });
+// Flache URL-Liste für SW-Cache
+const ALL_CLIP_URLS = CHAPTERS.flatMap(c => c.clips.map(cl => cl.url));
 
 const TRANSITION_MS = 3000;
 const QR_INTERSTITIAL_MS = 6000;
@@ -427,7 +383,7 @@ const qiCountdown = document.getElementById("qiCountdown");
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
-PLAYLIST.forEach((entry, i) => {
+CHAPTERS.forEach((entry, i) => {
   const el = document.createElement("div");
   el.className = "chapter";
   el.dataset.idx = i;
@@ -464,7 +420,9 @@ function updateProgress(i, pct) {
 }
 
 // ============ Playback-Logik ============
+// idx = aktuelles Chapter · clipIdx = aktueller Clip innerhalb des Chapters
 let idx = 0;
+let clipIdx = 0;
 let qiInterval = null;
 
 function applyTapContent(entry) {
@@ -508,30 +466,49 @@ function hideQrInterstitial() {
   if (qiInterval) clearInterval(qiInterval);
 }
 
-async function playNext() {
-  const entry = PLAYLIST[idx];
+// Startet ein neues Chapter — mit Transition-Frame und erstem Clip
+async function startChapter(targetIdx) {
+  idx = targetIdx;
+  clipIdx = 0;
+  const entry = CHAPTERS[idx];
   applyTapContent(entry);
   showTransition(entry);
   await new Promise(res => setTimeout(res, TRANSITION_MS));
   hideTransition();
   setActiveChapter(idx);
   updateProgress(idx, 0);
-  player.src = entry.url;
-  player.play().catch(() => {});
-  idx = (idx + 1) % PLAYLIST.length;
+  playClip();
 }
 
-// Progress-Updates aus Video (via timeupdate)
+// Spielt den aktuellen Clip innerhalb des aktuellen Chapters ab
+function playClip() {
+  const entry = CHAPTERS[idx];
+  const clip = entry.clips[clipIdx];
+  player.src = clip.url;
+  player.play().catch(() => {});
+}
+
+// Progress-Updates: Gesamt-Progress des Chapters = (abgespielte Clips + aktueller Clip-Fortschritt) / Chapter-Total
 player.addEventListener("timeupdate", () => {
   if (!player.duration) return;
-  const curIdx = (idx - 1 + PLAYLIST.length) % PLAYLIST.length;
-  updateProgress(curIdx, player.currentTime / player.duration);
+  const entry = CHAPTERS[idx];
+  const prevDur = entry.clips.slice(0, clipIdx).reduce((a, b) => a + b.dur, 0);
+  const curDur = Math.min(player.currentTime, entry.clips[clipIdx].dur);
+  updateProgress(idx, (prevDur + curDur) / entry.totalDur);
 });
 
 async function onVideoEnded() {
+  const entry = CHAPTERS[idx];
+  // Noch Clips im aktuellen Chapter übrig? → nächsten Clip ohne Interstitial
+  if (clipIdx + 1 < entry.clips.length) {
+    clipIdx++;
+    playClip();
+    return;
+  }
+  // Chapter zu Ende → QR-Interstitial, dann nächstes Chapter
   await showQrInterstitial();
   hideQrInterstitial();
-  playNext();
+  startChapter((idx + 1) % CHAPTERS.length);
 }
 
 player.addEventListener("ended", onVideoEnded);
@@ -543,18 +520,17 @@ function jumpToChapter(targetIdx) {
   qrInterstitial.classList.remove("show");
   overlay.classList.remove("show");
   tapHint.style.display = "block";
-  idx = targetIdx;
-  playNext();
+  startChapter(targetIdx);
 }
 
-playNext();
+startChapter(0);
 
 // ============ Service Worker + Cache ============
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").then(async reg => {
     await navigator.serviceWorker.ready;
     const sw = reg.active || reg.waiting || reg.installing;
-    if (sw) sw.postMessage({ type: "CACHE_VIDEOS", urls: PLAYLIST.map(e => e.url) });
+    if (sw) sw.postMessage({ type: "CACHE_VIDEOS", urls: ALL_CLIP_URLS });
   }).catch(err => console.log("SW error", err));
 
   navigator.serviceWorker.addEventListener("message", (e) => {
