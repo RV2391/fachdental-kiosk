@@ -1,5 +1,5 @@
 // Service Worker: cached Videos für Offline-Betrieb
-const CACHE_NAME = "fachdental-kiosk-v20";
+const CACHE_NAME = "fachdental-kiosk-v21";
 const STATIC_ASSETS = [
   "./",
   "./index.html",

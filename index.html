@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="KursRadar">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>KursRadar · Fachdental Südwest 2026</title>
+<title>KursRadar · Dentistry &amp; Beyond 2026</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -300,7 +300,7 @@
 <div id="qrOverlay">
   <div class="qr-eyebrow" id="qrEyebrow">Scanne mit deinem Phone</div>
   <h1 class="qr-headline" id="qrHeadline">
-    Fachdental-Besucher?<br>
+    Praxis-Team vor Ort?<br>
     <span class="accent">Hol dir deinen Kurs-Radar.</span>
   </h1>
   <div class="qr-card">
@@ -310,47 +310,93 @@
     Alle Dental-Fortbildungen in einer Suche.<br>
     Kostenlos. Herstellerneutral.
   </div>
-  <div class="qr-url">kurs-radar.com/themen/fachdental</div>
+  <div class="qr-url">kurs-radar.com</div>
   <div class="qr-countdown" id="countdown"></div>
 </div>
 
 <script>
-// ============ 2 Chapter-Gruppen für Sidebar ============
+// ============ 5 Chapter-Gruppen für Sidebar ============
 // Jedes Chapter kann mehrere Clips sequenziell abspielen.
 // Progress-Bar summiert über alle Clips des Chapters.
 const CHAPTERS = [
   {
-    chapter: { title: "Praxis der Zukunft", icon: "🏥", dur: "1:20" },
+    chapter: { title: "Schnell-Pitch", icon: "⚡", dur: "15s" },
     frame: {
-      eyebrow: "Praxis der Zukunft × KursRadar",
-      headline: "Mehr Effizienz. Mehr Freiheit.<br><span class='acc'>Mehr Zukunft.</span>",
-      sub: "Die Initiative und ihre über 20 Gründungspartner — und wie KursRadar dazu passt."
+      eyebrow: "Snack-Version",
+      headline: "KursRadar in<br><span class='acc'>15 Sekunden.</span>",
+      sub: "Für alle, die eigentlich schon weitergehen wollten."
     },
     tap: {
-      eyebrow: "Mehr zur Initiative",
-      headline: "Praxis der Zukunft<br><span class='accent'>× KursRadar.</span>",
-      sub: "Scanne für Infos zur Initiative und zum Fortbildungs-Katalog."
+      eyebrow: "Scanne mit deinem Phone",
+      headline: "Jetzt kostenlos<br><span class='accent'>loslegen.</span>",
+      sub: "Scan + Email reicht. Katalog · CME-Konto · alles kostenlos."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalVideoDExtended/video_d_pdz_extended_v2.mp4", dur: 80 }
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4", dur: 15 }
     ]
   },
   {
-    chapter: { title: "KursRadar", icon: "🎯", dur: "3:25" },
+    chapter: { title: "Was ist KursRadar?", icon: "📖", dur: "54s" },
     frame: {
-      eyebrow: "KursRadar · Alles in einem Durchlauf",
-      headline: "Alle Fortbildungen.<br><span class='acc'>Ein Katalog. Ein Klick.</span>",
-      sub: "Schnell-Pitch · Was ist KursRadar · Drei Perspektiven — hintereinander ohne Unterbrechung."
+      eyebrow: "Was ist KursRadar?",
+      headline: "Deutschlands neutraler<br><span class='acc'>Fortbildungs-Katalog</span><br>für Dental.",
+      sub: "Herstellerneutral · kostenfrei für Lernende · über 2.500 Kurse von ca. 70 Partnern"
     },
     tap: {
       eyebrow: "Scanne mit deinem Phone",
       headline: "Alle Dental-Fortbildungen<br><span class='accent'>in einer Suche.</span>",
-      sub: "Kostenlos. Herstellerneutral. Von Kammern bis Industrie-Akademien — Scan + Email reicht."
+      sub: "Kostenlos. Herstellerneutral. Von Kammern bis Industrie-Akademien."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4", dur: 15 },
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4", dur: 54 },
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4", dur: 54 }
+    ]
+  },
+  {
+    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:16" },
+    frame: {
+      eyebrow: "Drei Perspektiven · Eine Plattform",
+      headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
+      sub: "Praxis · Veranstalter · Referent:in — alle auf einer Bühne."
+    },
+    tap: {
+      eyebrow: "Deine Rolle im Katalog",
+      headline: "Egal ob du suchst,<br><span class='accent'>anbietest oder referierst.</span>",
+      sub: "KursRadar bündelt alles an einem Ort — in einer Suche, einem Konto, einer Oberfläche."
+    },
+    clips: [
       { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v1.mp4", dur: 136 }
+    ]
+  },
+  {
+    chapter: { title: "CME-Keychain", icon: "🔑", dur: "20s" },
+    frame: {
+      eyebrow: "Dein Anhänger am Stand",
+      headline: "Scan den QR →<br><span class='acc'>Dein CME-Wallet.</span>",
+      sub: "Punkte-Überblick in Echtzeit · Zertifikate hochladen · DSGVO-konform · PDF-Export für die Kammer"
+    },
+    tap: {
+      eyebrow: "Nur heute am Stand gratis",
+      headline: "Dein Keychain mit<br><span class='accent'>persönlichem QR-Code.</span>",
+      sub: "Scan → öffnet immer dein CME-Wallet: aktueller Punkte-Stand + Zertifikate hochladen in Sekunden. Keychain gibt's gratis am Stand."
+    },
+    clips: [
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4", dur: 20 }
+    ]
+  },
+  {
+    chapter: { title: "70+ Partner", icon: "🏢", dur: "6s" },
+    frame: {
+      eyebrow: "ca. 70 Partner · über 2.500 Kurse",
+      headline: "Die Bühne für alle,<br>die <span class='acc'>Dental-Fortbildung machen.</span>",
+      sub: "Von Kammern über Fachgesellschaften bis Industrie-Akademien — herstellerneutral in einem Katalog."
+    },
+    tap: {
+      eyebrow: "Als Veranstalter kostenlos listen",
+      headline: "Mach deine Kurse<br><span class='accent'>bundesweit sichtbar.</span>",
+      sub: "Katalog-Eintrag kostenfrei · Teilnahmebescheinigungen auf einem Klick · Siegel für Founding-Partner inklusive."
+    },
+    clips: [
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4", dur: 6 }
     ]
   }
 ];
