@@ -267,7 +267,7 @@
 
 <video id="player" muted playsinline webkit-playsinline autoplay preload="auto"></video>
 
-<!-- Kapitel-Bar unten horizontal (5 Kacheln, tap-to-jump) -->
+<!-- Kapitel-Bar unten horizontal (4 Kacheln, tap-to-jump) -->
 <div id="chapterSidebar" class="show">
   <!-- Items werden per JS gefüllt -->
 </div>
@@ -320,19 +320,19 @@
 // Progress-Bar summiert über alle Clips des Chapters.
 const CHAPTERS = [
   {
-    chapter: { title: "Schnell-Pitch", icon: "⚡", dur: "15s" },
+    chapter: { title: "Die Plattform", icon: "🎯", dur: "50s" },
     frame: {
-      eyebrow: "Snack-Version",
-      headline: "KursRadar in<br><span class='acc'>15 Sekunden.</span>",
-      sub: "Für alle, die eigentlich schon weitergehen wollten."
+      eyebrow: "KursRadar · Die Plattform",
+      headline: "Für alles rund<br><span class='acc'>um die Praxis.</span>",
+      sub: "Fortbildungen, CME-Wallet, Partner-Katalog — und jetzt auch Praxis-Dienstleister in einem Marktplatz."
     },
     tap: {
       eyebrow: "Scanne mit deinem Phone",
-      headline: "Jetzt kostenlos<br><span class='accent'>loslegen.</span>",
-      sub: "Scan + Email reicht. Katalog · CME-Konto · alles kostenlos."
+      headline: "Werd Teil<br><span class='accent'>der Plattform.</span>",
+      sub: "Praxis, Veranstalter, Dienstleister — alle auf einer Bühne. Kostenlos einsteigen."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalCoreLoop/core_v1.mp4", dur: 15 }
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/DienstleisterLaunch/dienstleister-spot-kiosk-silent.mp4", dur: 50 }
     ]
   },
   {
@@ -349,22 +349,6 @@ const CHAPTERS = [
     },
     clips: [
       { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/press_intro_v2.mp4", dur: 44 }
-    ]
-  },
-  {
-    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:11" },
-    frame: {
-      eyebrow: "Drei Perspektiven · Eine Plattform",
-      headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
-      sub: "Praxis · Veranstalter · Referent:in — alle auf einer Bühne."
-    },
-    tap: {
-      eyebrow: "Deine Rolle im Katalog",
-      headline: "Egal ob du suchst,<br><span class='accent'>anbietest oder referierst.</span>",
-      sub: "KursRadar bündelt alles an einem Ort — in einer Suche, einem Konto, einer Oberfläche."
-    },
-    clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v2.mp4", dur: 131 }
     ]
   },
   {
@@ -397,22 +381,6 @@ const CHAPTERS = [
     },
     clips: [
       { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPartnerMarquee/1f7fcef26b1b7657_1791804156284.mp4", dur: 6 }
-    ]
-  },
-  {
-    chapter: { title: "Founding 10", icon: "🎯", dur: "18s" },
-    frame: {
-      eyebrow: "Nur 10 Plätze · exklusiv",
-      headline: "Werde eine der<br><span class='acc'>ersten 10 Pilot-Praxen.</span>",
-      sub: "12 Monate kostenlos · 50 % lebenslang · direkte Hotline zu Robin + Dennis."
-    },
-    tap: {
-      eyebrow: "Scan QR → Platz reservieren",
-      headline: "60 Sek —<br><span class='accent'>Platz gesichert.</span>",
-      sub: "Pilot-Praxis werden · Team-Dashboard als erste nutzen · Nennung im Investor-Deck."
-    },
-    clips: [
-      { url: "https://ccpmveynekempwpzyyms.supabase.co/storage/v1/object/public/rendered-videos/kiosk/founding-10-v2.mp4", dur: 18.5 }
     ]
   }
 ];
