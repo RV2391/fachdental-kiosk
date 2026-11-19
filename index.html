@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="KursRadar">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>KursRadar · Dentistry &amp; Beyond 2026</title>
+<title>KursRadar · Dein Fortbildungs-Kompass</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -267,7 +267,7 @@
 
 <video id="player" muted playsinline webkit-playsinline autoplay preload="auto"></video>
 
-<!-- Kapitel-Bar unten horizontal (2 Kacheln: Praxis der Zukunft + KursRadar) -->
+<!-- Kapitel-Bar unten horizontal (5 Kacheln, tap-to-jump) -->
 <div id="chapterSidebar" class="show">
   <!-- Items werden per JS gefüllt -->
 </div>
@@ -300,7 +300,7 @@
 <div id="qrOverlay">
   <div class="qr-eyebrow" id="qrEyebrow">Scanne mit deinem Phone</div>
   <h1 class="qr-headline" id="qrHeadline">
-    Praxis-Team vor Ort?<br>
+    Dental-Fortbildung?<br>
     <span class="accent">Hol dir deinen Kurs-Radar.</span>
   </h1>
   <div class="qr-card">
@@ -336,7 +336,7 @@ const CHAPTERS = [
     ]
   },
   {
-    chapter: { title: "Was ist KursRadar?", icon: "📖", dur: "54s" },
+    chapter: { title: "Was ist KursRadar?", icon: "📖", dur: "44s" },
     frame: {
       eyebrow: "Was ist KursRadar?",
       headline: "Deutschlands neutraler<br><span class='acc'>Fortbildungs-Katalog</span><br>für Dental.",
@@ -348,11 +348,11 @@ const CHAPTERS = [
       sub: "Kostenlos. Herstellerneutral. Von Kammern bis Industrie-Akademien."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/b902d22f7314cb0a_1792071070664.mp4", dur: 54 }
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalPressIntro/press_intro_v2.mp4", dur: 44 }
     ]
   },
   {
-    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:16" },
+    chapter: { title: "Drei Perspektiven", icon: "👥", dur: "2:11" },
     frame: {
       eyebrow: "Drei Perspektiven · Eine Plattform",
       headline: "Was heißt KursRadar<br><span class='acc'>für dich?</span>",
@@ -364,23 +364,23 @@ const CHAPTERS = [
       sub: "KursRadar bündelt alles an einem Ort — in einer Suche, einem Konto, einer Oberfläche."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v1.mp4", dur: 136 }
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/FachdentalIpadLoopABC/ipad_loop_abc_v2.mp4", dur: 131 }
     ]
   },
   {
-    chapter: { title: "CME-Keychain", icon: "🔑", dur: "20s" },
+    chapter: { title: "CME-Keychain", icon: "🔑", dur: "19s" },
     frame: {
-      eyebrow: "Dein Anhänger am Stand",
+      eyebrow: "Dein digitales CME-Konto",
       headline: "Scan den QR →<br><span class='acc'>Dein CME-Wallet.</span>",
       sub: "Punkte-Überblick in Echtzeit · Zertifikate hochladen · DSGVO-konform · PDF-Export für die Kammer"
     },
     tap: {
-      eyebrow: "Nur heute am Stand gratis",
-      headline: "Dein Keychain mit<br><span class='accent'>persönlichem QR-Code.</span>",
-      sub: "Scan → öffnet immer dein CME-Wallet: aktueller Punkte-Stand + Zertifikate hochladen in Sekunden. Keychain gibt's gratis am Stand."
+      eyebrow: "Dein persönlicher CME-Keychain",
+      headline: "Scan öffnet immer<br><span class='accent'>dein CME-Wallet.</span>",
+      sub: "Aktueller Punkte-Stand + Zertifikate hochladen in Sekunden — direkt aufs Handy, von überall."
     },
     clips: [
-      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v1.mp4", dur: 20 }
+      { url: "https://vnznxgqskytalrimhnor.supabase.co/storage/v1/object/public/videos/content-videos/CMEKontoPromo/cme_konto_v2.mp4", dur: 18.5 }
     ]
   },
   {
